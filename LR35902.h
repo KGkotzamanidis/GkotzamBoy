@@ -87,6 +87,7 @@ public:
 	/* Arithemtic and Logical Unit (ALU) */
 public:
 	void alu16bitADD(u16_t data);
+	void alu16bitSPADD(u16_t data);
 
 	void alu8bitADD(u8_t data);
 	void alu8bitADC(u8_t data, bool carry);

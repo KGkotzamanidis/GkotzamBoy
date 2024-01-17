@@ -184,6 +184,9 @@ bool LR35902::getDoubleSpeed() {
 }
 
 #pragma region CPU execute Instruction
+/* For more information about the SM83 Instruction read this
+   https://gbdev.io/gb-opcodes/optables/
+*/
 void LR35902::executeInstruction(u8_t opcode) {
 	PC++;
 	lastcyclecount = instructionCount[opcode];
@@ -790,7 +793,7 @@ void LR35902::executeInstruction(u8_t opcode) {
 		ret(!getFlagZ());
 		break;
 	case 0xC1:
-		setBC(mem->readWord(PC));
+		setBC(mem->readWord(SP));
 		SP += 2;
 		break;
 	case 0xC2:
@@ -842,51 +845,166 @@ void LR35902::executeInstruction(u8_t opcode) {
 		ret(!getFlagC());
 		break;
 	case 0xD1:
+		setDE(mem->readWord(SP));
+		SP += 2;
+		break;
 	case 0xD2:
+		jp(!getFlagC());
+		break;
 	case 0xD3:
+		/* Empty Instruction */
+		break;
 	case 0xD4:
+		call(!getFlagC());
+		break;
 	case 0xD5:
+		SP -= 2;
+		mem->writeWord(SP, DE());
+		break;
 	case 0xD6:
+		alu8bitSUB(mem->readByte(PC));
+		PC++;
+		break;
 	case 0xD7:
+		rst(0x10);
+		break;
 	case 0xD8:
+		ret(getFlagC());
 	case 0xD9:
+		reti();
+		break;
 	case 0xDA:
+		jp(getFlagC());
+		break;
 	case 0xDB:
+		/* Empty Instruction */
+		break;
 	case 0xDC:
+		call(getFlagC());
+		break;
 	case 0xDD:
+		/* Empty Instruction */
+		break;
 	case 0xDE:
+		alu8bitSBC(mem->readByte(PC), getFlagC());
+		PC++;
+		break;
 	case 0xDF:
+		rst(0x18);
+		break;
 	case 0xE0:
+		mem->writeByte(0xFF00 + mem->readByte(PC), A);
+		PC++;
+		break;
 	case 0xE1:
+		setHL(mem->readWord(SP));
+		SP += 2;
+		break;
 	case 0xE2:
+		mem->writeByte(0xFF00 + C, A);
+		break;
 	case 0xE3:
+		/* Empty Instruction */
+		break;
 	case 0xE4:
+		/* Empty Instruction */
+		break;
 	case 0xE5:
+		SP -= 2;
+		mem->writeWord(SP, HL());
+		break;
 	case 0xE6:
+		logic8bitAND(mem->readByte(PC));
+		PC++;
+		break;
 	case 0xE7:
+		rst(0x20);
+		break;
 	case 0xE8:
+		alu16bitSPADD(mem->readByte(PC));
+		PC++;
+		break;
 	case 0xE9:
+		PC = HL();
+		break;
 	case 0xEA:
+		mem->writeByte(mem->readWord(PC), A);
+		PC += 2;
+		break;
 	case 0xEB:
+		/* Empty Instruction */
+		break;
 	case 0xEC:
+		/* Empty Instruction */
+		break;
 	case 0xED:
+		/* Empty Instruction */
+		break;
 	case 0xEE:
+		logic8bitXOR(mem->readByte(PC));
+		PC++;
+		break;
 	case 0xEF:
+		rst(0x28);
+		break;
 	case 0xF0:
+		A = mem->readByte(0xFF00 + mem->readByte(PC));
+		PC++;
+		break;
 	case 0xF1:
+		setAF(mem->readWord(SP));
+		SP += 2;
+		break;
 	case 0xF2:
+		A = mem->readByte(0xFF00 + C);
+		break;
 	case 0xF3:
+		di();
+		break;
 	case 0xF4:
+		/* Empty Instruction */
 	case 0xF5:
+		SP -= 2;
+		mem->writeWord(SP, AF());
+		break;
 	case 0xF6:
+		rst(0x30);
+		break;
 	case 0xF7:
-	case 0xF8:
+		rst(0x30);
+		break;
+	case 0xF8: {
+		i8_t data = mem->readByte(PC);
+		u16_t result = SP + data;
+
+		setFlag(Flag_Z, false);
+		setFlag(Flag_N, false);
+		setFlag(Flag_H, ((SP & 0x0F) + (data & 0x0F)) > 0x0F);
+		setFlag(Flag_C, result > 0xFFFF);
+
+		setHL(result);
+		PC++;
+		break;
+	}
 	case 0xF9:
+		SP = HL();
+		break;
 	case 0xFA:
+		A = mem->readByte(mem->readWord(PC));
+		break;
 	case 0xFB:
+		ei();
+		break;
 	case 0xFC:
+		/* Empty Instruction */
+		break;
 	case 0xFD:
+		/* Empty Instruction */
+		break;
 	case 0xFE:
+		logic8bitCP(mem->readByte(PC));
+		PC++;
+		break;
 	case 0xFF:
 		rst(0x38);
 		break;
@@ -1283,6 +1401,18 @@ void LR35902::alu16bitADD(u16_t data) {
 	setFlag(Flag_N, false);
 	setFlag(Flag_H, (((HL() & 0x0FFF) + (data & 0x0FFF)) & 0xF000) != 0);
 	setFlag(Flag_C, result > 0xFFFF);
+}
+void LR35902::alu16bitSPADD(u16_t data) {
+	u8_t immediate = data;
+	u16_t tmp = SP;
+	u16_t result = SP + immediate;
+
+	setFlag(Flag_Z, false);
+	setFlag(Flag_N, false);
+	setFlag(Flag_H, ((tmp & 0x0F) + (immediate & 0x0F)) > 0x0F);
+	setFlag(Flag_C, result > 0xFFFF);
+
+	SP = result;
 }
 void LR35902::alu8bitADD(u8_t data) {
 	u8_t tmp = A;
