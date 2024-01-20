@@ -174,7 +174,9 @@ void LR35902::reset() {
 void LR35902::run() {
 	executeInstruction(mem->readByte(PC));
 }
-
+u8_t LR35902::returnOPCODE() {
+	return mem->readByte(PC);
+}
 int LR35902::getlastcyclecount() {
 	return lastcyclecount;
 }
@@ -570,6 +572,7 @@ void LR35902::executeInstruction(u8_t opcode) {
 		break;
 	case 0x76:
 		halt();
+		break;
 	case 0x77:
 		mem->writeByte(HL(), A);
 		break;
@@ -870,6 +873,7 @@ void LR35902::executeInstruction(u8_t opcode) {
 		break;
 	case 0xD8:
 		ret(getFlagC());
+		break;
 	case 0xD9:
 		reti();
 		break;
@@ -1020,149 +1024,437 @@ void LR35902::executePrefixedInstruction(u8_t opcode) {
 	lastcyclecount = prefixedinstructionCount[opcode];
 	switch (opcode) {
 	case 0x0:
+		B = RLC(B);
+		break;
 	case 0x1:
+		C = RLC(C);
+		break;
 	case 0x2:
+		D = RLC(D);
+		break;
 	case 0x3:
+		E = RLC(E);
+		break;
 	case 0x4:
+		H = RLC(H);
+		break;
 	case 0x5:
+		L = RLC(L);
+		break;
 	case 0x6:
+		mem->writeByte(HL(), RLC(mem->readByte(HL())));
+		break;
 	case 0x7:
+		A = RLC(A);
+		break;
 	case 0x8:
+		B = RRC(B);
+		break;
 	case 0x9:
+		C = RRC(C);
+		break;
 	case 0xA:
+		D = RRC(D);
+		break;
 	case 0xB:
+		E = RRC(E);
+		break;
 	case 0xC:
+		H = RRC(H);
+		break;
 	case 0xD:
+		L = RRC(L);
+		break;
 	case 0xE:
+		mem->writeByte(HL(), RRC(mem->readByte(HL())));
+		break;
 	case 0xF:
+		A = RRC(A);
+		break;
 	case 0x10:
+		B = RL(B);
+		break;
 	case 0x11:
+		C = RL(C);
+		break;
 	case 0x12:
+		D = RL(D);
+		break;
 	case 0x13:
+		E = RL(E);
+		break;
 	case 0x14:
+		H = RL(H);
+		break;
 	case 0x15:
+		L = RL(L);
+		break;
 	case 0x16:
+		mem->writeByte(HL(), RL(mem->readByte(HL())));
+		break;
 	case 0x17:
+		A = RL(A);
+		break;
 	case 0x18:
+		B = RR(B);
+		break;
 	case 0x19:
+		C = RR(C);
+		break;
 	case 0x1A:
+		D = RR(D);
+		break;
 	case 0x1B:
+		E = RR(E);
+		break;
 	case 0x1C:
+		H = RR(H);
+		break;
 	case 0x1D:
+		L = RR(L);
+		break;
 	case 0x1E:
+		mem->writeByte(HL(), RR(mem->readByte(HL())));
+		break;
 	case 0x1F:
+		A = RR(A);
+		break;
 	case 0x20:
+		B = SLA(B);
+		break;
 	case 0x21:
+		C = SLA(C);
+		break;
 	case 0x22:
+		D = SLA(D);
+		break;
 	case 0x23:
+		E = SLA(E);
+		break;
 	case 0x24:
+		H = SLA(H);
+		break;
 	case 0x25:
+		L = SLA(L);
+		break;
 	case 0x26:
+		mem->writeByte(HL(), SLA(mem->readByte(HL())));
+		break;
 	case 0x27:
+		A = SLA(A);
+		break;
 	case 0x28:
+		B = SRA(B);
+		break;
 	case 0x29:
+		C = SRA(C);
+		break;
 	case 0x2A:
+		D = SRA(D);
+		break;
 	case 0x2B:
+		E = SRA(E);
+		break;
 	case 0x2C:
+		H = SRA(H);
+		break;
 	case 0x2D:
+		L = SRA(L);
+		break;
 	case 0x2E:
+		mem->writeByte(HL(), SRA(mem->readByte(HL())));
+		break;
 	case 0x2F:
+		A = SRA(A);
+		break;
 	case 0x30:
+		B = SWAP(B);
+		break;
 	case 0x31:
+		C = SWAP(C);
+		break;
 	case 0x32:
+		D = SWAP(D);
+		break;
 	case 0x33:
+		E = SWAP(E);
+		break;
 	case 0x34:
+		H = SWAP(H);
+		break;
 	case 0x35:
+		L = SWAP(L);
+		break;
 	case 0x36:
+		mem->writeByte(HL(), SWAP(mem->readByte(HL())));
+		break;
 	case 0x37:
+		A = SWAP(A);
+		break;
 	case 0x38:
+		B = SRL(B);
+		break;
 	case 0x39:
+		C = SRL(C);
+		break;
 	case 0x3A:
+		D = SRL(D);
+		break;
 	case 0x3B:
+		E = SRL(E);
+		break;
 	case 0x3C:
+		H = SRL(H);
+		break;
 	case 0x3D:
+		L = SRL(L);
+		break;
 	case 0x3E:
+		mem->writeByte(HL(), mem->readByte(HL()));
+		break;
 	case 0x3F:
+		A = SRL(A);
+		break;
 	case 0x40:
+		BIT(0, B);
+		break;
 	case 0x41:
+		BIT(0, C);
+		break;
 	case 0x42:
+		BIT(0, D);
+		break;
 	case 0x43:
+		BIT(0, E);
+		break;
 	case 0x44:
+		BIT(0, H);
+		break;
 	case 0x45:
+		BIT(0, L);
+		break;
 	case 0x46:
+		BIT(0, mem->readByte(HL()));
+		break;
 	case 0x47:
+		BIT(0, A);
+		break;
 	case 0x48:
+		BIT(1, B);
+		break;
 	case 0x49:
+		BIT(1, C);
+		break;
 	case 0x4A:
+		BIT(1, D);
+		break;
 	case 0x4B:
+		BIT(1, E);
+		break;
 	case 0x4C:
+		BIT(1, H);
+		break;
 	case 0x4D:
+		BIT(1, L);
+		break;
 	case 0x4E:
+		BIT(1, mem->readByte(HL()));
+		break;
 	case 0x4F:
+		BIT(1, A);
+		break;
 	case 0x50:
+		BIT(2, B);
+		break;
 	case 0x51:
+		BIT(2, C);
+		break;
 	case 0x52:
+		BIT(2, D);
+		break;
 	case 0x53:
+		BIT(2, E);
+		break;
 	case 0x54:
+		BIT(2, H);
+		break;
 	case 0x55:
+		BIT(2, L);
+		break;
 	case 0x56:
+		BIT(2, mem->readByte(HL()));
+		break;
 	case 0x57:
+		BIT(2, A);
+		break;
 	case 0x58:
+		BIT(3, B);
+		break;
 	case 0x59:
+		BIT(3, C);
+		break;
 	case 0x5A:
+		BIT(3, D);
+		break;
 	case 0x5B:
+		BIT(3, E);
+		break;
 	case 0x5C:
+		BIT(3, H);
+		break;
 	case 0x5D:
+		BIT(3, L);
+		break;
 	case 0x5E:
+		BIT(3, mem->readByte(HL()));
+		break;
 	case 0x5F:
+		BIT(3, A);
+		break;
 	case 0x60:
+		BIT(4, B);
+		break;
 	case 0x61:
+		BIT(4, C);
+		break;
 	case 0x62:
+		BIT(4, D);
+		break;
 	case 0x63:
+		BIT(4, E);
+		break;
 	case 0x64:
+		BIT(4, H);
+		break;
 	case 0x65:
+		BIT(4, L);
+		break;
 	case 0x66:
+		BIT(4, mem->readByte(HL()));
+		break;
 	case 0x67:
+		BIT(4, A);
+		break;
 	case 0x68:
+		BIT(5, B);
+		break;
 	case 0x69:
+		BIT(5, C);
+		break;
 	case 0x6A:
+		BIT(5, D);
+		break;
 	case 0x6B:
+		BIT(5, E);
+		break;
 	case 0x6C:
+		BIT(5, H);
+		break;
 	case 0x6D:
+		BIT(5, L);
+		break;
 	case 0x6E:
+		BIT(5, mem->readByte(HL()));
+		break;
 	case 0x6F:
+		BIT(5, A);
+		break;
 	case 0x70:
+		BIT(6, B);
+		break;
 	case 0x71:
+		BIT(6, C);
+		break;
 	case 0x72:
+		BIT(6, D);
+		break;
 	case 0x73:
+		BIT(6, E);
+		break;
 	case 0x74:
+		BIT(6, H);
+		break;
 	case 0x75:
+		BIT(6, L);
+		break;
 	case 0x76:
+		BIT(6, mem->readByte(HL()));
+		break;
 	case 0x77:
+		BIT(6, A);
+		break;
 	case 0x78:
+		BIT(7, B);
+		break;
 	case 0x79:
+		BIT(7, C);
+		break;
 	case 0x7A:
+		BIT(7, D);
+		break;
 	case 0x7B:
+		BIT(7, E);
+		break;
 	case 0x7C:
+		BIT(7, H);
+		break;
 	case 0x7D:
+		BIT(7, L);
+		break;
 	case 0x7E:
+		BIT(7, mem->readByte(HL()));
+		break;
 	case 0x7F:
+		BIT(7, A);
+		break;
 	case 0x80:
+		B = RES(0, B);
+		break;
 	case 0x81:
+		C = RES(0, C);
+		break;
 	case 0x82:
+		D = RES(0, D);
+		break;
 	case 0x83:
+		E = RES(0, E);
+		break;
 	case 0x84:
+		H = RES(0, H);
+		break;
 	case 0x85:
+		L = RES(0, L);
+		break;
 	case 0x86:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 0));
+		break;
 	case 0x87:
+		A = RES(0, A);
+		break;
 	case 0x88:
+		B = RES(1, B);
+		break;
 	case 0x89:
+		C = RES(1, C);
+		break;
 	case 0x8A:
+		D = RES(1, D);
+		break;
 	case 0x8B:
+		E = RES(1, E);
+		break;
 	case 0x8C:
+		H = RES(1, H);
+		break;
 	case 0x8D:
+		L = RES(1, L);
+		break;
 	case 0x8E:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 1));
+		break;
 	case 0x8F:
+		A = RES(1, A);
+		break;
 	case 0x90:
 	case 0x91:
 	case 0x92:
@@ -1275,6 +1567,7 @@ void LR35902::executePrefixedInstruction(u8_t opcode) {
 	case 0xFD:
 	case 0xFE:
 	case 0xFF:
+		break;
 	default:
 		break;
 	}
@@ -1646,20 +1939,20 @@ u8_t LR35902::SWAP(u8_t data) {
 
 	return result;
 }
-void LR35902::BIT(u8_t data, int bit) {
+void LR35902::BIT(int bit, u8_t data) {
 	bool result = (data & (1 << bit)) == 0;
 
 	setFlag(Flag_Z, result);
 	setFlag(Flag_N, false);
 	setFlag(Flag_H, true);
 }
-u8_t LR35902::SET(u8_t data, int bit) {
+u8_t LR35902::SET(int bit, u8_t data) {
 	u8_t setBit = 1 << bit;
 	u8_t result = data | setBit;
 
 	return result;
 }
-u8_t LR35902::RES(u8_t data, int bit) {
+u8_t LR35902::RES(int bit, u8_t data) {
 	u8_t resetBit = ~(1 << bit);
 	u8_t result = data & resetBit;
 	

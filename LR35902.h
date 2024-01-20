@@ -50,7 +50,10 @@ public:
 private:
 	void executeInstruction(u8_t opcode);
 	void executePrefixedInstruction(u8_t opcode);
+	/* Debug CPU Functions */
 public:
+	u8_t returnOPCODE();
+private:
 	Memory* mem;
 
 	bool IME, IMEhold, ishalt, EIDIFlag, DoubleSpeed;
@@ -60,12 +63,13 @@ public:
 	/* CPU Registers functions */
 public:
 	u8_t A, B, C, D, E, F, H, L;
+	u16_t PC, SP;
+private:
 	u16_t AF();
 	u16_t BC();
 	u16_t DE();
 	u16_t HL();
-	u16_t PC, SP;
-
+	
 	void setAF(u16_t data);
 	void setBC(u16_t data);
 	void setDE(u16_t data);
@@ -85,7 +89,7 @@ public:
 	bool getFlagC();
 
 	/* Arithemtic and Logical Unit (ALU) */
-public:
+private:
 	void alu16bitADD(u16_t data);
 	void alu16bitSPADD(u16_t data);
 
@@ -105,7 +109,7 @@ public:
 	void logic8bitCPL();
 
 	/* Rotate and Shift */
-public:
+private:
 	u8_t RLC(u8_t data);
 	u8_t RL(u8_t data);
 	u8_t RRC(u8_t data);
@@ -115,12 +119,12 @@ public:
 	u8_t SRL(u8_t data);
 	u8_t SWAP(u8_t data);
 
-	void BIT(u8_t data, int bit);
-	u8_t SET(u8_t data, int bit);
-	u8_t RES(u8_t data, int bit);
+	void BIT(int bit, u8_t data);
+	u8_t SET(int bit, u8_t data);
+	u8_t RES(int bit, u8_t data);
 
 	/* CPU Control Instruction */
-public:
+private:
 	void ccf(void);
 	void scf(void);
 	void nop(void);
@@ -130,7 +134,7 @@ public:
 	void ei(void);
 
 	/* Jump Instruction */
-public:
+private:
 	void jp(bool state);
 	void jr(bool state);
 	void call(bool state);
