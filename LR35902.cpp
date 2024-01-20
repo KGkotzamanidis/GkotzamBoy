@@ -1567,6 +1567,7 @@ void LR35902::executePrefixedInstruction(u8_t opcode) {
 	case 0xFD:
 	case 0xFE:
 	case 0xFF:
+		A = SET(7, A);
 		break;
 	default:
 		break;
