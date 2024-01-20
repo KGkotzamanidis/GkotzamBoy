@@ -1456,53 +1456,149 @@ void LR35902::executePrefixedInstruction(u8_t opcode) {
 		A = RES(1, A);
 		break;
 	case 0x90:
+		B = RES(2, B);
+		break;
 	case 0x91:
+		C = RES(2, C);
+		break;
 	case 0x92:
+		D = RES(2, D);
+		break;
 	case 0x93:
+		E = RES(2, E);
+		break;
 	case 0x94:
+		H = RES(2, H);
+		break;
 	case 0x95:
+		L = RES(2, L);
+		break;
 	case 0x96:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 2));
+		break;
 	case 0x97:
+		A = RES(2, A);
+		break;
 	case 0x98:
+		B = RES(3, B);
+		break;
 	case 0x99:
+		C = RES(3, C);
+		break;
 	case 0x9A:
+		D = RES(3, D);
+		break;
 	case 0x9B:
+		E = RES(3, E);
+		break;
 	case 0x9C:
+		H = RES(3, H);
+		break;
 	case 0x9D:
+		L = RES(3, L);
+		break;
 	case 0x9E:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 3));
+		break;
 	case 0x9F:
+		A = RES(3, A);
+		break;
 	case 0xA0:
+		B = RES(4, B);
+		break;
 	case 0xA1:
+		C = RES(4, C);
+		break;
 	case 0xA2:
+		D = RES(4, D);
+		break;
 	case 0xA3:
+		E = RES(4, E);
+		break;
 	case 0xA4:
+		H = RES(4, H);
+		break;
 	case 0xA5:
+		L = RES(4, L);
+		break;
 	case 0xA6:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 4));
+		break;
 	case 0xA7:
+		A = RES(4, A);
+		break;
 	case 0xA8:
+		B = RES(5, B);
+		break;
 	case 0xA9:
+		C = RES(5, C);
+		break;
 	case 0xAA:
+		D = RES(5, D);
+		break;
 	case 0xAB:
+		E = RES(5, E);
+		break;
 	case 0xAC:
+		H = RES(5, H);
+		break;
 	case 0xAD:
+		L = RES(5, L);
+		break;
 	case 0xAE:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 5));
+		break;
 	case 0xAF:
+		A = RES(5, A);
+		break;
 	case 0xB0:
+		B = RES(6, B);
+		break;
 	case 0xB1:
+		C = RES(6, C);
+		break;
 	case 0xB2:
+		D = RES(6, D);
+		break;
 	case 0xB3:
+		E = RES(6, E);
+		break;
 	case 0xB4:
+		H = RES(6, H);
+		break;
 	case 0xB5:
+		L = RES(6, L);
+		break;
 	case 0xB6:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 6));
+		break;
 	case 0xB7:
+		A = RES(6, A);
+		break;
 	case 0xB8:
+		B = RES(7, B);
+		break;
 	case 0xB9:
+		C = RES(7, C);
+		break;
 	case 0xBA:
+		D = RES(7, D);
+		break;
 	case 0xBB:
+		E = RES(7, E);
+		break;
 	case 0xBC:
+		H = RES(7, H);
+		break;
 	case 0xBD:
+		L = RES(7, L);
+		break;
 	case 0xBE:
+		mem->writeByte(HL(), RES(mem->readByte(HL()), 7));
+		break;
 	case 0xBF:
+		A = RES(7, A);
+		break;
 	case 0xC0:
 	case 0xC1:
 	case 0xC2:
