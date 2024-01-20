@@ -25,6 +25,7 @@ public:
 	~Memory();
 
 	vector<u8_t>ptrData;
+	bool debug_CPU = false;
 
 	u8_t readByte(u16_t address);
 	u16_t readWord(u16_t address);

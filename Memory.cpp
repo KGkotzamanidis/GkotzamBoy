@@ -17,6 +17,7 @@
 
 Memory::Memory(LR35902_Interrupt& Interrupts, LR35902_Timer& Timers) :Interrupts(&Interrupts), Timers(&Timers) {
 	isloadBios = false;
+	debug_CPU = false;
 }
 Memory::~Memory() {
 
@@ -24,9 +25,15 @@ Memory::~Memory() {
 
 u8_t Memory::readByte(u16_t address) {
 	u8_t data = 0x00;
-	if (address >= 0x0000 && address <= 0xFFFF) {
-		data = ptrData[address];
+	if (debug_CPU) {
+		if (address >= 0x0000 && address <= 0xFFFF) {
+			data = ptrData[address];
+		}
 	}
+	else {
+
+	}
+	
 	return data;
 }
 u16_t Memory::readWord(u16_t address) {
@@ -37,8 +44,13 @@ u16_t Memory::readWord(u16_t address) {
 }
 
 void Memory::writeByte(u16_t address, u8_t data) {
-	if (address >= 0x0000 && address <= 0xFFFF) {
-		ptrData[address] = data;
+	if (debug_CPU) {
+		if (address >= 0x0000 && address <= 0xFFFF) {
+			ptrData[address] = data;
+		}
+	}
+	else {
+
 	}
 }
 void Memory::writeWord(u16_t address, u16_t data) {

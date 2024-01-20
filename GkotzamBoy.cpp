@@ -25,7 +25,9 @@ int main(int arga, char* argv[]) {
 
 	mainmemory.loadBios("D:\\GkotzamBoy\\Bios.bin");
 	
+	
 	/* Test Program */
+	mainmemory.debug_CPU = true;
 	mainmemory.ptrData.clear();
 	mainmemory.ptrData.push_back(0x00); // NOP
 	mainmemory.ptrData.push_back(0x3E); // LD A n8
