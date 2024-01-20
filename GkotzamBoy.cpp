@@ -27,26 +27,22 @@ int main(int arga, char* argv[]) {
 	
 	/* Test Program */
 	mainmemory.ptrData.clear();
-	mainmemory.ptrData.push_back(0x00); //1-NOP
-	mainmemory.ptrData.push_back(0x06); //2-LD B,n8
-	mainmemory.ptrData.push_back(0x02); //3-Read addressh for data
-	mainmemory.ptrData.push_back(0x00); //4-NOP
-	mainmemory.ptrData.push_back(0x04); //5-INC B = 3
-	mainmemory.ptrData.push_back(0x04); //6-INC B = 4
-	mainmemory.ptrData.push_back(0x05); //7-DEC B = 3
-	mainmemory.ptrData.push_back(0x00); //8-NOP
-	mainmemory.ptrData.push_back(0x06); //9-LD B,n8
-	mainmemory.ptrData.push_back(0x45); //10-Read addressh for data
-	mainmemory.ptrData.push_back(0x00); //11-NOP
+	mainmemory.ptrData.push_back(0x00); // NOP
+	mainmemory.ptrData.push_back(0x3E); // LD A n8
+	mainmemory.ptrData.push_back(0x04); // n8 = 0x04
+	mainmemory.ptrData.push_back(0xCB); //Prefix Instruction
+	mainmemory.ptrData.push_back(0xFF); //SET 7,A
+	mainmemory.ptrData.push_back(0x00); // NOP
+	mainmemory.ptrData.push_back(0x00); // NOP
+	mainmemory.ptrData.push_back(0x04); // INC B
+	mainmemory.ptrData.push_back(0x00); // NOP
 
-	CPU.B = 0x00;
-	CPU.PC = 0x00;
-	CPU.lastcyclecount = 0;
 	CPU.reset();
 
 	while (true) {
 		
 		CPU.run();
+		u8_t opcode = CPU.returnOPCODE();
 	}
 
 	return 0;
