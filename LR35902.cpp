@@ -1678,42 +1678,116 @@ void LR35902::executePrefixedInstruction(u8_t opcode) {
 		C = SET(3, C);
 		break;
 	case 0xDA:
+		D = SET(3, D);
+		break;
 	case 0xDB:
+		E = SET(3, E);
+		break;
 	case 0xDC:
+		H = SET(3, H);
+		break;
 	case 0xDD:
+		L = SET(3, L);
+		break;
 	case 0xDE:
+		mem->writeByte(HL(), SET(mem->readByte(HL()), 3));
+		break;
 	case 0xDF:
+		A = SET(3, A);
+		break;
 	case 0xE0:
+		B = SET(4, B);
+		break;
 	case 0xE1:
+		C = SET(4, C);
+		break;
 	case 0xE2:
+		D = SET(4, D);
+		break;
 	case 0xE3:
+		E = SET(4, E);
+		break;
 	case 0xE4:
+		H = SET(4, H);
+		break;
 	case 0xE5:
+		L = SET(4, L);
+		break;
 	case 0xE6:
+		mem->writeByte(HL(), SET(mem->readByte(HL()), 4));
+		break;
 	case 0xE7:
+		A = SET(4, A);
+		break;
 	case 0xE8:
+		B = SET(5, B);
+		break;
 	case 0xE9:
+		C = SET(5, C);
+		break;
 	case 0xEA:
+		D = SET(5, D);
+		break;
 	case 0xEB:
+		E = SET(5, E);
+		break;
 	case 0xEC:
+		H = SET(5, H);
+		break;
 	case 0xED:
+		L = SET(5, L);
+		break;
 	case 0xEE:
+		mem->writeByte(HL(), SET(mem->readByte(HL()), 5));
+		break;
 	case 0xEF:
+		A = SET(5, A);
+		break;
 	case 0xF0:
+		B = SET(6, B);
+		break;
 	case 0xF1:
+		C = SET(6, C);
+		break;
 	case 0xF2:
+		D = SET(6, D);
+		break;
 	case 0xF3:
+		E = SET(6, E);
+		break;
 	case 0xF4:
+		H = SET(6, H);
+		break;
 	case 0xF5:
+		L = SET(6, L);
+		break;
 	case 0xF6:
+		mem->writeByte(HL(), SET(mem->readByte(HL()), 6));
+		break;
 	case 0xF7:
+		A = SET(6, A);
+		break;
 	case 0xF8:
+		B = SET(7, B);
+		break;
 	case 0xF9:
+		C = SET(7, C);
+		break;
 	case 0xFA:
+		D = SET(7, D);
+		break;
 	case 0xFB:
+		E = SET(7, E);
+		break;
 	case 0xFC:
+		H = SET(7, H);
+		break;
 	case 0xFD:
+		L = SET(7, L);
+		break;
 	case 0xFE:
+		mem->writeByte(HL(), SET(mem->readByte(HL()), 7));
+		break;
 	case 0xFF:
 		A = SET(7, A);
 		break;
