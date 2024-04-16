@@ -131,6 +131,7 @@
     <ClInclude Include="Memory.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Symbols.h" />
+    <ClInclude Include="WRam.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="GkotzamBoy.rc" />
@@ -142,6 +143,7 @@
     <ClCompile Include="GkotzamBoy.cpp" />
     <ClCompile Include="LR35902.cpp" />
     <ClCompile Include="Memory.cpp" />
+    <ClCompile Include="WRam.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
