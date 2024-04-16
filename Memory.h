@@ -16,12 +16,13 @@
 #pragma once
 
 #include "LR35902.h"
+#include "WRam.h"
 #include "Symbols.h"
 class LR35902_Interrupt;
 class LR35902_Timer;
 class Memory {
 public:
-	Memory(LR35902_Interrupt& Interrupts, LR35902_Timer& Timers);
+	Memory(LR35902_Interrupt& Interrupts, LR35902_Timer& Timers, WRam& Wram);
 	~Memory();
 
 	vector<u8_t>ptrData;
@@ -38,6 +39,7 @@ public:
 private:
 	LR35902_Interrupt* Interrupts;
 	LR35902_Timer* Timers;
+	WRam* Wram;
 
 	vector<u8_t>ptrBIOS;
 	bool isloadBios;

@@ -15,7 +15,7 @@
 */
 #include "Memory.h"
 
-Memory::Memory(LR35902_Interrupt& Interrupts, LR35902_Timer& Timers) :Interrupts(&Interrupts), Timers(&Timers) {
+Memory::Memory(LR35902_Interrupt& Interrupts, LR35902_Timer& Timers, WRam& Wram) :Interrupts(&Interrupts), Timers(&Timers), Wram(&Wram) {
 	isloadBios = false;
 	debug_CPU = false;
 }
