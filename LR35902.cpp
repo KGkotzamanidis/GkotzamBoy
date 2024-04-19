@@ -172,7 +172,19 @@ void LR35902::reset() {
 	PC = SP = 0x0000;
 }
 void LR35902::run() {
-	executeInstruction(mem->readByte(PC));
+	if (EIDIFlag) {
+		EIDIFlag = false;
+	}
+	else {
+		IME = IMEhold;
+	}
+
+	if (!ishalt) {
+		executeInstruction(mem->readByte(PC));
+	}
+	else {
+		lastcyclecount = 4;
+	}
 }
 u8_t LR35902::returnOPCODE() {
 	return mem->readByte(PC);
