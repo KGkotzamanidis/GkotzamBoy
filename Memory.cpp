@@ -26,12 +26,19 @@ Memory::~Memory() {
 u8_t Memory::readByte(u16_t address) {
 	u8_t data = 0x00;
 	if (debug_CPU) {
+		/*
+		* While this is true the program return address data of this vector
+		*/
 		if (address >= 0x0000 && address <= 0xFFFF) {
 			data = ptrData[address];
 		}
 	}
 	else {
-
+		if (address >= 0x0000 && address <= 0x7FFF) {
+			if (isloadBios && address <= 0x100) {
+				data = ptrBIOS[address];
+			}
+		}
 	}
 	
 	return data;
@@ -45,6 +52,9 @@ u16_t Memory::readWord(u16_t address) {
 
 void Memory::writeByte(u16_t address, u8_t data) {
 	if (debug_CPU) {
+		/*
+		* While this is true the program write address data of this vector
+		*/
 		if (address >= 0x0000 && address <= 0xFFFF) {
 			ptrData[address] = data;
 		}

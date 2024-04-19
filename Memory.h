@@ -35,6 +35,7 @@ public:
 	void writeWord(u16_t address, u16_t data);
 
 	void loadBios(string filepath);
+	bool isloadBios;
 
 private:
 	LR35902_Interrupt* Interrupts;
@@ -42,6 +43,5 @@ private:
 	WRam* Wram;
 
 	vector<u8_t>ptrBIOS;
-	bool isloadBios;
 	streampos sizeBios;
 };
