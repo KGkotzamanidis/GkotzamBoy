@@ -16,28 +16,24 @@
 
 #include "Memory.h"
 #include "LR35902.h"
+#include "WRam.h"
+
+void loadROM(Memory& mem, string file_path);
+streampos sizeFile;
 
 int main(int arga, char* argv[]) {
+
 	LR35902_Interrupt Interrupts;
 	LR35902_Timer Timers(Interrupts);
-	Memory mainmemory(Interrupts, Timers);
+	WRam Wram;
+	Memory mainmemory(Interrupts, Timers, Wram);
 	LR35902 CPU(mainmemory);
 
 	mainmemory.loadBios("D:\\GkotzamBoy\\Bios.bin");
-	
-	
-	/* Test Program */
-	mainmemory.debug_CPU = true;
-	mainmemory.ptrData.clear();
-	mainmemory.ptrData.push_back(0x00); // NOP
-	mainmemory.ptrData.push_back(0x3E); // LD A n8
-	mainmemory.ptrData.push_back(0x04); // n8 = 0x04
-	mainmemory.ptrData.push_back(0xCB); //Prefix Instruction
-	mainmemory.ptrData.push_back(0xFF); //SET 7,A
-	mainmemory.ptrData.push_back(0x00); // NOP
-	mainmemory.ptrData.push_back(0x00); // NOP
-	mainmemory.ptrData.push_back(0x04); // INC B
-	mainmemory.ptrData.push_back(0x00); // NOP
+
+	if (mainmemory.isloadBios) {
+		cout << "Bios Loaded!" << endl;
+	}
 
 	CPU.reset();
 
@@ -45,7 +41,24 @@ int main(int arga, char* argv[]) {
 		
 		CPU.run();
 		u8_t opcode = CPU.returnOPCODE();
+
+		int x = CPU.getlastcyclecount();
 	}
 
 	return 0;
+}
+
+void loadROM(Memory& mem, string file_path) {
+	ifstream readFile(file_path, ios::in | ios::binary | ios::ate);
+	if (readFile.is_open()) {
+		readFile.seekg(0, ios::end);
+		sizeFile = readFile.tellg();
+		readFile.seekg(0, ios::beg);
+		mem.ptrData.resize(sizeFile);
+		readFile.read(reinterpret_cast<char*>(mem.ptrData.data()), sizeFile);
+		readFile.close();
+	}
+	else {
+		sizeFile = 0;
+	}
 }
